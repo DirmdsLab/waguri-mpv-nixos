@@ -4,7 +4,7 @@
   upstreamRevision,
   libplaceboSource,
   overlaySource,
-  guide,
+  guide ? null,
 }:
 
 let
