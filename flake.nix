@@ -27,7 +27,6 @@
             upstreamRevision = mpv-source.rev;
             libplaceboSource = libplacebo-source;
             overlaySource = ./waguri;
-            guide = ./WAGURI-NIXOS.md;
           };
         in
         {
