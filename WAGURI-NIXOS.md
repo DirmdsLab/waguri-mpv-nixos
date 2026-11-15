@@ -5,7 +5,7 @@ https://github.com/DirmdsLab/waguri-mpv
 
 bruh :v
 
-
+![Screenshot](img/ss.png)
 
 # Waguri MPV untuk NixOS
 
