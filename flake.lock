@@ -1,0 +1,66 @@
+{
+  "nodes": {
+    "libplacebo-source": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1792950923,
+        "narHash": "sha256-9CQhW/3CCUnjo0iDleKhcfZlMYVfHijqLE+oND4Wkeg=",
+        "ref": "refs/tags/v7.387.0",
+        "rev": "275f7dea27924cdd34ab2e6c20e448b6bc4fab65",
+        "revCount": 4051,
+        "submodules": true,
+        "type": "git",
+        "url": "https://github.com/haasn/libplacebo.git"
+      },
+      "original": {
+        "ref": "refs/tags/v7.387.0",
+        "rev": "275f7dea27924cdd34ab2e6c20e448b6bc4fab65",
+        "submodules": true,
+        "type": "git",
+        "url": "https://github.com/haasn/libplacebo.git"
+      }
+    },
+    "mpv-source": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1794662576,
+        "narHash": "sha256-ppRRYBDQiCySaPhhWJdSq7NjTniHFHPoggUxiBxYehI=",
+        "owner": "mpv-player",
+        "repo": "mpv",
+        "rev": "bb4823e5f0eb92a830242e60dfdcc50d1f2e0410",
+        "type": "github"
+      },
+      "original": {
+        "owner": "mpv-player",
+        "repo": "mpv",
+        "rev": "bb4823e5f0eb92a830242e60dfdcc50d1f2e0410",
+        "type": "github"
+      }
+    },
+    "nixpkgs": {
+      "locked": {
+        "lastModified": 1794552581,
+        "narHash": "sha256-qXFIqA6FCcx7XeDzw0ZNlkDT9UiCzrNDwK8RuU8RcHM=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "f1e5c356f35d07e7b71a6b5e6c9338e0b029e0c0",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "f1e5c356f35d07e7b71a6b5e6c9338e0b029e0c0",
+        "type": "github"
+      }
+    },
+    "root": {
+      "inputs": {
+        "libplacebo-source": "libplacebo-source",
+        "mpv-source": "mpv-source",
+        "nixpkgs": "nixpkgs"
+      }
+    }
+  },
+  "root": "root",
+  "version": 7
+}
