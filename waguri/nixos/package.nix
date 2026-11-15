@@ -4,7 +4,6 @@
   upstreamRevision,
   libplaceboSource,
   overlaySource,
-  guide ? null,
 }:
 
 let
@@ -103,7 +102,6 @@ pkgs.stdenv.mkDerivation {
       --replace-fail /etc/fonts/conf.d ${pkgs.fontconfig.out}/etc/fonts/conf.d \
       --replace-fail '</fontconfig>' '<dir>/run/current-system/sw/share/fonts</dir><dir>${cjkFonts}</dir></fontconfig>'
     printf '%s\n' ${lib.escapeShellArg upstreamRevision} > "$out/share/doc/waguri-mpv/upstream-commit"
-    install -m 644 ${guide} "$out/share/doc/waguri-mpv/WAGURI-NIXOS.md"
   '';
 
   meta = {
