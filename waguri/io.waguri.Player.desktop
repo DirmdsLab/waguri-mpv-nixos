@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Name=Waguri MPV
+Comment=Play audio and video with a local music library
+Exec=waguri-mpv %U
+Icon=io.waguri.Player
+StartupWMClass=io.waguri.Player
+Terminal=false
+Categories=AudioVideo;Audio;Video;Player;
+MimeType=audio/mpeg;audio/flac;audio/x-wav;audio/ogg;video/mp4;video/x-matroska;video/webm;audio/x-mpegurl;application/vnd.apple.mpegurl;

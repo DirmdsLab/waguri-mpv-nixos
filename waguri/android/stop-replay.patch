@@ -1,0 +1,102 @@
+--- a/app/src/main/java/is/xyz/mpv/BaseMPVView.kt
++++ b/app/src/main/java/is/xyz/mpv/BaseMPVView.kt
+@@ -14,7 +14,7 @@
+      *
+      * Call this once before the view is shown.
+      */
+-    fun initialize(configDir: String, cacheDir: String) {
++    fun initialize(configDir: String, cacheDir: String, keepIdle: Boolean = false) {
+         MPVLib.create(context.applicationContext)
+ 
+         /* set normal options (user-supplied config can override) */
+@@ -30,8 +30,8 @@
+         postInitOptions()
+         // could mess up VO init before surfaceCreated() is called
+         MPVLib.setOptionString("force-window", "no")
+-        // need to idle at least once for playFile() logic to work
+-        MPVLib.setOptionString("idle", "once")
++        // The library view needs a live core even after an explicit stop command.
++        MPVLib.setOptionString("idle", if (keepIdle) "yes" else "once")
+ 
+         holder.addCallback(this)
+         observeProperties()
+--- a/app/src/main/java/is/xyz/mpv/MainScreenFragment.kt
++++ b/app/src/main/java/is/xyz/mpv/MainScreenFragment.kt
+@@ -184,6 +184,8 @@
+     private val removedTrackUris = mutableSetOf<Uri>()
+     private var trackSwipeHelper: ItemTouchHelper? = null
+     private var currentMedia: MediaFile? = null
++    private var stoppedMedia: MediaFile? = null
++    private var stoppedAudioFormat: String? = null
+     private var activePlaylist: PlaylistSelection? = null
+     private var playlistRequestGeneration = 0
+ 
+@@ -662,13 +664,19 @@
+         updateMediaListJumpButtons()
+ 
+         binding.playButton.setOnClickListener {
+-            if (currentMedia != null && playerInitialized) {
+-                if (playbackFinished) playMedia(requireNotNull(currentMedia))
+-                else if (
+-                    MPVLib.getPropertyBoolean("pause") != true || MusicPlaybackService.ensureFocus()
+-                )
+-                    binding.mpvSurface.cyclePause()
+-                updatePlaybackUi()
++            if (!playerInitialized) return@setOnClickListener
++            val media = currentMedia
++            val stopped = stoppedMedia
++            when {
++                media != null && playbackFinished -> playMedia(media)
++                media != null -> {
++                    if (MPVLib.getPropertyBoolean("pause") != true || MusicPlaybackService.ensureFocus()) {
++                        binding.mpvSurface.cyclePause()
++                    }
++                    updatePlaybackUi()
++                }
++                stopped?.temporaryYouTubeAudio == true -> prepareYouTubeTrack(stopped, stoppedAudioFormat)
++                stopped != null -> playMedia(stopped)
+             }
+         }
+ 
+@@ -1582,6 +1590,12 @@
+ 
+     private fun stopCurrentPlayback(showToast: Boolean = true) {
+         val currentBinding = _binding ?: return
++        if (showToast) {
++            currentMedia?.let { media ->
++                stoppedMedia = media
++                stoppedAudioFormat = currentYouTubeAudioFormat
++            }
++        }
+         cancelYouTubeAudioRequest()
+         if (isVideoFullscreen) exitVideoFullscreen()
+ 
+@@ -1627,8 +1641,9 @@
+         currentBinding.playbackDuration.isEnabled = false
+         currentBinding.playbackSeekBar.progress = 0
+         currentBinding.playbackSeekBar.isEnabled = false
+-        currentBinding.playButton.isEnabled = false
+-        currentBinding.playButton.alpha = 0.45f
++        val canReplay = stoppedMedia != null && playerInitialized
++        currentBinding.playButton.isEnabled = canReplay
++        currentBinding.playButton.alpha = if (canReplay) 1f else 0.45f
+         currentBinding.playButton.setImageResource(R.drawable.ic_waguri_play)
+         currentBinding.playButton.contentDescription = getString(R.string.play)
+ 
+@@ -2610,6 +2625,7 @@
+             binding.mpvSurface.initialize(
+                 requireContext().filesDir.path,
+                 requireContext().cacheDir.path,
++                keepIdle = true,
+             )
+ 
+             binding.mpvSurface.alpha = 0f
+@@ -3820,6 +3836,8 @@
+ 
+             // Audio playback must not wait for a visible video surface (Library/background).
+             MPVLib.command(arrayOf("loadfile", mediaPath, "replace"))
++            stoppedMedia = null
++            stoppedAudioFormat = null
+ 
+             MPVLib.setPropertyBoolean("pause", !MusicPlaybackService.ensureFocus())
+         } catch (exception: Exception) {

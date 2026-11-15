@@ -1,0 +1,25 @@
+<RCC>
+  <qresource prefix="/waguri">
+    <file alias="cover.jpg">assets/cover.jpg</file>
+    <file alias="theme.qss">assets/theme.qss</file>
+    <file alias="ambient.qss">assets/ambient.qss</file>
+    <file alias="previous.png">assets/previous.png</file>
+    <file alias="next.png">assets/next.png</file>
+    <file alias="play.png">assets/play.png</file>
+    <file alias="pause.png">assets/pause.png</file>
+    <file alias="app-icon.png">assets/app-icon.png</file>
+    <file alias="visualizer.png">assets/visualizer.png</file>
+    <file alias="visualizer-on.png">assets/visualizer-on.png</file>
+    <file alias="audio-mode.png">assets/audio-mode.png</file>
+    <file alias="video-mode.png">assets/video-mode.png</file>
+    <file alias="video-mode-on.png">assets/video-mode-on.png</file>
+    <file alias="queue.png">assets/queue.png</file>
+    <file alias="shuffle.png">assets/shuffle.png</file>
+    <file alias="shuffle-on.png">assets/shuffle-on.png</file>
+    <file alias="repeat.png">assets/repeat.png</file>
+    <file alias="repeat-on.png">assets/repeat-on.png</file>
+    <file alias="repeat-one.png">assets/repeat-one.png</file>
+    <file alias="repeat-one-on.png">assets/repeat-one-on.png</file>
+    <file alias="more.png">assets/more.png</file>
+  </qresource>
+</RCC>
